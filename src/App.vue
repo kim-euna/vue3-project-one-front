@@ -1,17 +1,18 @@
 <template>
-  <Header></Header> <!-- 헤더 컴포넌트 -->
-  <Footer></Footer> <!-- 푸터 컴포넌트-->
+  <AppHeader></AppHeader> <!-- 헤더 컴포넌트 (고정) -->
+  <router-view></router-view> <!-- router가 보이는 영역 -->
+  <AppFooter></AppFooter> <!-- 푸터 컴포넌트 (고정) -->
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
+import AppHeader from './components/AppHeader.vue'
+import AppFooter from './components/AppFooter.vue'
 
 export default {
   name: 'App',
   components: {
-    Header,
-    Footer
+    AppHeader,
+    AppFooter
   }
 }
 </script>
