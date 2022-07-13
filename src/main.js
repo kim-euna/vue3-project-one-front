@@ -1,10 +1,11 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from './App'
+import router_main from './router/index.js'
+
 import BootStrapVue from 'bootstrap-vue-3';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
-import router_main from './router/index.js'
 
 //createRotuer : 실제 Vue Router 인스턴스를 생성할 때 쓰이는 function
 const router = createRouter(
