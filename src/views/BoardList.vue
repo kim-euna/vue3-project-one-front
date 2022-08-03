@@ -1,5 +1,12 @@
 <template>
   <div>
+    <b-table
+      id="itemList"
+      :items="pagingItems"
+      :per-page="perPage"
+      :current-page="currentPage"
+      @click="rowClick"
+    ></b-table>
     <b-pagination
       v-model="currentPage"
       :total-rows="rows"
@@ -8,13 +15,6 @@
       align="center"
       @page-click="pageClick"
     ></b-pagination>
-    <b-table
-      id="itemList"
-      :items="pagingItems"
-      :per-page="perPage"
-      :current-page="currentPage"
-      @click="rowClick"
-    ></b-table>
     <p class="mt-3">현재 페이지 : {{ currentPage }}</p>
     <b-button @click="writeContent">글쓰기</b-button>
   </div>
@@ -22,32 +22,38 @@
 
 <script>
 import { reactive, toRefs } from '@vue/reactivity';
-import { onBeforeMount } from '@vue/runtime-core';
+import { onBeforeMount, onMounted } from '@vue/runtime-core';
+import { getCurrentInstance } from 'vue'
+
 export default {
     name : 'BoardList',
     components : {
     },
     setup() {
+        const app = getCurrentInstance();     
+        const $axios = app.appContext.config.globalProperties.$axios;   
+        const $serverUrl = app.appContext.config.globalProperties.$serverUrl;   
         const state = reactive({
             perPage : 5,
             currentPage : 1,
             pagingItems : [],
-            originItems : [
-                { id : 1, title : '게시글1', creDate : '20220712'},
-                { id : 2, title : '게시글2', creDate : '20220712'},
-                { id : 3, title : '게시글3', creDate : '20220712'},
-                { id : 4, title : '게시글4', creDate : '20220712'},
-                { id : 5, title : '게시글5', creDate : '20220712'},
-                { id : 6, title : '게시글6', creDate : '20220712'},
-                { id : 7, title : '게시글7', creDate : '20220712'},
-                { id : 8, title : '게시글8', creDate : '20220712'},
-                { id : 9, title : '게시글9', creDate : '20220712'},
-                { id : 10, title : '게시글10', creDate : '20220712'},
-                { id : 11, title : '게시글11', creDate : '20220712'},
-                { id : 12, title : '게시글12', creDate : '20220712'},
-                { id : 13, title : '게시글13', creDate : '20220712'},
-                { id : 14, title : '게시글14', creDate : '20220712'},
-            ],
+            // originItems : [
+            //     { id : 1, title : '게시글1', creDate : '20220712'},
+            //     { id : 2, title : '게시글2', creDate : '20220712'},
+            //     { id : 3, title : '게시글3', creDate : '20220712'},
+            //     { id : 4, title : '게시글4', creDate : '20220712'},
+            //     { id : 5, title : '게시글5', creDate : '20220712'},
+            //     { id : 6, title : '게시글6', creDate : '20220712'},
+            //     { id : 7, title : '게시글7', creDate : '20220712'},
+            //     { id : 8, title : '게시글8', creDate : '20220712'},
+            //     { id : 9, title : '게시글9', creDate : '20220712'},
+            //     { id : 10, title : '게시글10', creDate : '20220712'},
+            //     { id : 11, title : '게시글11', creDate : '20220712'},
+            //     { id : 12, title : '게시글12', creDate : '20220712'},
+            //     { id : 13, title : '게시글13', creDate : '20220712'},
+            //     { id : 14, title : '게시글14', creDate : '20220712'},
+            // ],
+            originItems : [],
             fields : [
                 { key : 'id', label : '번호' },
                 { key : 'title', label : '제목' },
@@ -65,14 +71,45 @@ export default {
             state.currentPage = page;
             getData(page);
         }
+
+        /**
         const getData = (page) => {
+            $axios.get($serverUrl + "/board/list", {
+                //params: this.requestBody,
+                //headers: {}
+            }).then((res) => {    
+                state.originItems = res.data
+                paginging(page);    
+            }).catch((err) => {
+                if (err.message.indexOf('Network Error') > -1) {
+                alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
+                }
+            })
+        }
+        */
+       
+        const getData = async (page) => {
+            try {
+                const { data } = await $axios.get($serverUrl + "/board/list", {})
+                state.originItems = data
+                paginging(page);  
+            } catch(err) {
+                if (err.message.indexOf('Network Error') > -1) {
+                    alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
+                }
+            }
+        }
+
+        const paginging = (page) => {
             let startNo = ( page - 1 ) * 5; 
             let endNo = ( page * 5 );
             state.pagingItems = state.originItems.slice(startNo, endNo); //endNo-1까지. endNo미포함
         }
+
         onBeforeMount(() => {
             getData(state.currentPage);
         })
+
         return {
             ...toRefs(state),
             rowClick,
