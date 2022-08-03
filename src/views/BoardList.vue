@@ -37,22 +37,6 @@ export default {
             perPage : 5,
             currentPage : 1,
             pagingItems : [],
-            // originItems : [
-            //     { id : 1, title : '게시글1', creDate : '20220712'},
-            //     { id : 2, title : '게시글2', creDate : '20220712'},
-            //     { id : 3, title : '게시글3', creDate : '20220712'},
-            //     { id : 4, title : '게시글4', creDate : '20220712'},
-            //     { id : 5, title : '게시글5', creDate : '20220712'},
-            //     { id : 6, title : '게시글6', creDate : '20220712'},
-            //     { id : 7, title : '게시글7', creDate : '20220712'},
-            //     { id : 8, title : '게시글8', creDate : '20220712'},
-            //     { id : 9, title : '게시글9', creDate : '20220712'},
-            //     { id : 10, title : '게시글10', creDate : '20220712'},
-            //     { id : 11, title : '게시글11', creDate : '20220712'},
-            //     { id : 12, title : '게시글12', creDate : '20220712'},
-            //     { id : 13, title : '게시글13', creDate : '20220712'},
-            //     { id : 14, title : '게시글14', creDate : '20220712'},
-            // ],
             originItems : [],
             fields : [
                 { key : 'id', label : '번호' },
@@ -87,7 +71,7 @@ export default {
             })
         }
         */
-       
+
         const getData = async (page) => {
             try {
                 const { data } = await $axios.get($serverUrl + "/board/list", {})
