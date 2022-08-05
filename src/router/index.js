@@ -1,5 +1,6 @@
 //골뱅이는 무조건 src부터 시작하게 해준다.
 import Main from '@/views/Main.vue'
+import BoardWrite from '@/views/BoardWrite.vue'
 
 const routes = [
     {
@@ -16,6 +17,16 @@ const routes = [
         path : '/board/list',
         name : 'BoardList',
         component: () => import("../views/BoardList.vue")
+    },
+    {
+        path : '/board/detail',
+        name : 'BoardDetail',
+        component: () => import("../views/BoardDetail.vue")
+    },
+    {
+        path : '/board/write',
+        name : 'BoardWrite',
+        component: BoardWrite
     }
 ]
 export default routes
