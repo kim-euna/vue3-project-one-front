@@ -4,9 +4,9 @@ import App from './App'
 import router_main from './router/index.js'
 import axios from 'axios'
 
-import BootstrapVue from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import BootstrapVue3 from 'bootstrap-vue-3'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 
 //createRotuer : 실제 Vue Router 인스턴스를 생성할 때 쓰이는 function
 const router = createRouter(
@@ -23,7 +23,7 @@ const router = createRouter(
 
 const app = createApp(App);
 app.use(router);
-app.use(BootstrapVue);
+app.use(BootstrapVue3);
 app.config.globalProperties.$axios = axios;  //라이브러리를 전역에서 사용하도록 전역변수로 설정. 컴포넌트에서 this.$axios 호출할 수 있음
 app.config.globalProperties.$serverUrl = '//localhost:8081' //api server
 

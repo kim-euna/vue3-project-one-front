@@ -1,30 +1,38 @@
 <template>
-  <b-container>
-  <div>
-    <!-- b-table에서 제공하는 row-clicked param으로 3개 보내줌 -->
-    <b-table
-      id="itemList"
-      :items="pagingItems"
-      :per-page="perPage"
-      :current-page="currentPage"
-      :bordered="true"
-      :hover="true"
-      @head-clicked="head"
-    >
-    </b-table>
+    <b-container>
+    <div>
+        <b-table 
+            id="itemList"
+            :items="pagingItems"
+            :per-page="perPage"
+            :current-page="currentPage"
+            :bordered="true"
+            :hover="true"
+        >
+        <template #cell(title)="data">
+            <div @click="onRowClicked(data, data.item, data.item.title )">{{ data.item.title }}</div>
+        </template>
+        </b-table>
 
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      aria-controls="itemList"
-      align="center"
-      @page-click="pageClick"
-    ></b-pagination>
-    <p class="mt-3">현재 페이지 : {{ currentPage }}</p>
-    <b-button>글쓰기</b-button>
-  </div>
+        <b-pagination
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="itemList"
+        align="center"
+        @page-click="pageClick"
+        ></b-pagination>
+        <p class="mt-3">현재 페이지 : {{ currentPage }}</p>
+        <b-button>글쓰기</b-button>
+    </div> 
     </b-container>
+
+        <!-- TEST btn -->
+        <b-button>Button</b-button>
+        <b-button variant="danger">Button</b-button>
+        <b-button variant="success">Button</b-button>
+        <b-button variant="outline-primary">Button</b-button>
+        
 </template>
 
 <script>
@@ -48,27 +56,17 @@ export default {
             currentPage : 1,
             pagingItems : [],
             originItems : [],
-            index : '',      
+            index : '',    
         });
 
-        const onRowSelected = (item, index, event) => {
-            alert(item);
-            alert(index);
-            alert(event);
+        const onRowClicked = (one, two, three) => {
+            console.log(JSON.stringify(two.idx));//key
             router.push({
                 name : "BoardDetail",
-                params : { idx: item.index } //Params 프로그래밍 방식
+                params : { idx: two.idx } //Params 프로그래밍 방식
             });
-            //router.push({ name: "BoardDetail"})
-        }
-        const writeContent = () => {
-            alert("writeContent입니다.");
-        }
+        }   
 
-        const head = () => {
-            alert("@");
-            
-        }
         //page-click event를 쓰면, 페이징버튼을 누를 때, 버튼 이벤트와 page번호를 argument로 전달해줌.
         const pageClick = (bvEvt, page) => {
             state.currentPage = page;
@@ -115,9 +113,8 @@ export default {
 
         return {
             ...toRefs(state),
-            writeContent,
             pageClick,
-            head,
+            onRowClicked,
         }
     },
     data() {
@@ -129,10 +126,7 @@ export default {
             return this.originItems.length;
         }
     },
-    methods : {
-      onRowSelected(items) {
-        this.originItems = items
-      },
+    methods : {     
     }
 }
 </script>
