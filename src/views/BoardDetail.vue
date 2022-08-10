@@ -1,33 +1,52 @@
 <template>
   <div>
     <b-card>
-      <div class="content-detail-content-info">
-        <div class="content-detail-content-info-left">
-          <div class="content-detail-content-info-left-number">
-            {{ originItems.idx }}
-          </div>
-          <div class="content-detail-content-info-left-subject">
-            {{ originItems.title }}
-          </div>
-        </div>
-        <div class="content-detail-content-info-right">
-          <div class="content-detail-content-info-right-user">
-            글쓴이: {{ originItems.author }}
-          </div>
-          <div class="content-detail-content-info-right-created">
-            등록일: {{ originItems.created_at }}
-          </div>
-        </div>
+      <div class="row">
+      <div class="col-md-2"/>
+      <div class="col-md-8">      
+      <b-form @submit="onSubmit"> <!-- @reset="onReset -->
+        <b-form-group id="input-group-1" label="제목" label-for="input-1">
+          <b-form-input
+            id="input-1"
+            v-model="originItems.title"
+            type="text"
+            placeholder="Enter title"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-2" label="작성자" label-for="input-2">
+          <b-form-input
+            id="input-2"
+            v-model="originItems.author"
+            placeholder="Enter author"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-3" label="작성일" label-for="input-3">
+          <b-form-input
+            id="input-3"
+            v-model="originItems.created_at"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-3" label="작성일" label-for="input-3">
+          <b-form-textarea
+            id="textarea"
+            v-model="originItems.contents"
+            placeholder="Enter something"
+            rows="8"
+            :state="contentsLen >= 10"
+            max-rows="8"
+            size="sl"
+          ></b-form-textarea>
+        </b-form-group>
+
+        <b-button type="submit">목록으로</b-button>
+      </b-form>
       </div>
-      <div class="content-detail-content">
-        {{ originItems.contents }}
-      </div>
-      <div class="content-detail-button">
-        <b-button variant="primary" @click="goUpdate">수정</b-button>
-        <b-button variant="success" @click="goDelete">삭제</b-button>
-      </div>
-      <div class="content-detail-comment">
-        덧글
       </div>
     </b-card>
   </div>
@@ -47,21 +66,23 @@ export default {
         const router = useRouter()      
         const route = useRoute()      
         const state = reactive({            
-            originItems : [
-              {
-                idx : '',
-                title : '',
-                author : '',
-                created_at : '',
-                contents : ''
-              }
-            ],
+          originItems : [
+            {
+              idx : '',
+              title : '',
+              author : '',
+              created_at : '',
+              contents : ''
+            }
+          ],
+          contentsLen : '',
         });
 
         const getData = async () => {
             try {
-                const { data } = await axios.get(process.env.VUE_APP_API_URI + '/board/1', {}); // back : @PathVariable : URL 경로의 일부를 파라미터로 사용할 때 이용. URL에서 값을 가져온다.
+                const { data } = await axios.get(process.env.VUE_APP_API_URI + '/board/' + state.originItems.idx, {}); // back : @PathVariable : URL 경로의 일부를 파라미터로 사용할 때 이용. URL에서 값을 가져온다.
                 state.originItems = data;
+                state.contentsLen = Object.keys(state.originItems.contents).length;
             } catch(err) {
                 if (err.message.indexOf('Network Error') > -1) {
                     alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.');
@@ -78,8 +99,8 @@ export default {
         }
 
         onBeforeMount(() => {
-            getData();
-            console.log("idx : " + route.params.idx);
+          state.originItems.idx = route.params.idx;
+          getData();
         })
 
         return {

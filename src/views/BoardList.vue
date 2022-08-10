@@ -23,16 +23,9 @@
         @page-click="pageClick"
         ></b-pagination>
         <p class="mt-3">현재 페이지 : {{ currentPage }}</p>
-        <b-button>글쓰기</b-button>
+        <b-button variant="outline-primary">글쓰기</b-button>
     </div> 
     </b-container>
-
-        <!-- TEST btn -->
-        <b-button>Button</b-button>
-        <b-button variant="danger">Button</b-button>
-        <b-button variant="success">Button</b-button>
-        <b-button variant="outline-primary">Button</b-button>
-        
 </template>
 
 <script>
@@ -92,7 +85,7 @@ export default {
         const getData = async (page) => {
             try {
                 const { data } = await $axios.get(process.env.VUE_APP_API_URI + '/board/list', {})
-                state.originItems = data
+                state.originItems = data;
                 paginging(page);  
             } catch(err) {
                 if (err.message.indexOf('Network Error') > -1) {
