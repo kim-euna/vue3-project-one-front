@@ -12,6 +12,7 @@
             type="text"
             placeholder="Enter title"
             required
+            disabled
           ></b-form-input>
         </b-form-group>
 
@@ -21,6 +22,7 @@
             v-model="originItems.author"
             placeholder="Enter author"
             required
+            disabled
           ></b-form-input>
         </b-form-group>
 
@@ -29,6 +31,7 @@
             id="input-3"
             v-model="originItems.created_at"
             required
+            disabled
           ></b-form-input>
         </b-form-group>
 
@@ -38,13 +41,11 @@
             v-model="originItems.contents"
             placeholder="Enter something"
             rows="8"
-            :state="contentsLen >= 10"
-            max-rows="8"
-            size="sl"
+            disabled
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button type="submit">목록으로</b-button>
+        <b-button @click="goBoardList">목록으로</b-button>
       </b-form>
       </div>
       </div>
@@ -90,12 +91,10 @@ export default {
             }
         }
 
-        const goUpdate = () => {
-            router.push('/board/write');
-        }
-
-        const goDelete = () => {
-
+        const goBoardList = () => {
+            router.push({
+                name : "BoardList"
+            });
         }
 
         onBeforeMount(() => {
@@ -105,8 +104,7 @@ export default {
 
         return {
             ...toRefs(state),
-            goUpdate,
-            goDelete,
+            goBoardList,
         }
     },
     data() {

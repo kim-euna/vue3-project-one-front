@@ -1,4 +1,5 @@
 <template>
+    <b-container><div style="padding:10px;"> </div></b-container> <!--여백-->
     <b-container>
     <div>
         <b-table 
@@ -30,7 +31,7 @@
 
 <script>
 import { reactive, toRefs } from '@vue/reactivity';
-import { onBeforeMount } from '@vue/runtime-core';
+import { onMounted  } from '@vue/runtime-core';
 import { getCurrentInstance } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -38,7 +39,10 @@ export default {
     name : 'BoardList',
     components : {
     },
-    setup() {
+    async setup() {
+        let dataReady = ref(false);
+            dataReady.value = await Promise.resolve(true);
+
         const router = useRouter()
 
         const app = getCurrentInstance();     
@@ -100,14 +104,17 @@ export default {
             state.pagingItems = state.originItems.slice(startNo, endNo); //endNo-1까지. endNo미포함
         }
 
-        onBeforeMount(() => {
-            getData(state.currentPage);
+        onMounted(() => {
+            setTimeout(() => {
+                getData(state.currentPage);
+            }, 4000)
         })
 
         return {
             ...toRefs(state),
             pageClick,
             onRowClicked,
+            dataReady,
         }
     },
     data() {

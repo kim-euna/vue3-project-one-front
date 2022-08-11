@@ -14,6 +14,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */"../views/About.vue")
     },
     {
+        path : '/board/main',
+        name : 'BoardMain',
+        component: () => import("../views/BoardMain.vue")
+    },
+    {
         path : '/board/list',
         name : 'BoardList',
         component: () => import("../views/BoardList.vue")
@@ -27,6 +32,6 @@ const routes = [
         path : '/board/write',
         name : 'BoardWrite',
         component: BoardWrite
-    }
+    },
 ]
 export default routes
