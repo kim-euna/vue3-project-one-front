@@ -93,7 +93,7 @@ export default {
 
         const goBoardList = () => {
             router.push({
-                name : "BoardList"
+                name : "BoardMain"
             });
         }
 

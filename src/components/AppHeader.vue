@@ -11,9 +11,12 @@
         <div class="collapse navbar-collapse" id="navbarColor03">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <router-link to="/board/list"><a class="nav-link" href="#">Board</a></router-link>
+              <router-link to="/board/main"><a class="nav-link" href="#">Board</a></router-link>
             </li>
             <li class="nav-item">
+              <!-- 
+              <router-link to="/about"><a class="nav-link" href="#">About</a></router-link>
+                -->
               <router-link to="/about"><a class="nav-link" href="#">About</a></router-link>
             </li>
             <li class="nav-item dropdown">

@@ -31,7 +31,7 @@
 
 <script>
 import { reactive, toRefs } from '@vue/reactivity';
-import { onMounted  } from '@vue/runtime-core';
+import { onMounted } from '@vue/runtime-core';
 import { getCurrentInstance } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -40,9 +40,6 @@ export default {
     components : {
     },
     async setup() {
-        let dataReady = ref(false);
-            dataReady.value = await Promise.resolve(true);
-
         const router = useRouter()
 
         const app = getCurrentInstance();     
@@ -86,16 +83,17 @@ export default {
         }
         */
 
+        const timeout = (ms) => {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+            
         const getData = async (page) => {
-            try {
-                const { data } = await $axios.get(process.env.VUE_APP_API_URI + '/board/list', {})
-                state.originItems = data;
-                paginging(page);  
-            } catch(err) {
-                if (err.message.indexOf('Network Error') > -1) {
-                alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
-                }
-            }
+            await timeout(1000);
+            const { data } = await $axios.get(process.env.VUE_APP_API_URI + '/board/list', {})
+            state.originItems = data;
+            paginging(page);
+            return data;
         }
 
         const paginging = (page) => {
@@ -104,17 +102,17 @@ export default {
             state.pagingItems = state.originItems.slice(startNo, endNo); //endNo-1까지. endNo미포함
         }
 
-        onMounted(() => {
-            setTimeout(() => {
-                getData(state.currentPage);
-            }, 4000)
+        onMounted(async() => {
+            //await getData(state.currentPage);
         })
+
+        const load = await getData(state.currentPage); //맨 밑에 와야함 
 
         return {
             ...toRefs(state),
             pageClick,
             onRowClicked,
-            dataReady,
+            load,
         }
     },
     data() {

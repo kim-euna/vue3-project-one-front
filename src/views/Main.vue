@@ -8,10 +8,10 @@
                 <div class="row gx-4 gx-lg-5 align-items-center">
                     <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." /></div>
                     <div class="col-md-6">
-                        <div class="small mb-1">SKU: BST-498</div>
-                        <h1 class="display-5 fw-bolder">가보쟈고..</h1>
+                        <div class="small mb-1">welcome to euna's blog</div>
+                        <h1 class="display-5 fw-bolder">kim euna ღ </h1>
                         <div class="fs-5 mb-5">
-                            <span>가보쟈고~~~~~~~~~~~~</span>
+                            <span>hello ! :)</span>
                         </div>
                         <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
                         <div class="d-flex">
