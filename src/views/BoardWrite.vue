@@ -43,7 +43,7 @@ export default {
 
         const getData = async () => {
             try {
-                const { data } = await axios.get(process.env.VUE_APP_API_URI + '/board/'+state.idx, {}); // back : @PathVariable : URL 경로의 일부를 파라미터로 사용할 때 이용. URL에서 값을 가져온다.
+                const { data } = await axios.get(process.env.VUE_APP_API_URI + '/board/'+state.originItems.idx, {}); // back : @PathVariable : URL 경로의 일부를 파라미터로 사용할 때 이용. URL에서 값을 가져온다.
                 state.originItems = data;
             } catch(err) {
                 if (err.message.indexOf('Network Error') > -1) {

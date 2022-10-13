@@ -13,8 +13,9 @@
             <BoardList />
         </template>
         <template #fallback>
-          <div style="padding:10px;"> 
-            <p class="f"> Loading .. </p>	
+          <!-- 로딩 스피너 -->
+          <div class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
         </template>        
     </Suspense>
@@ -44,5 +45,4 @@ export default {
 }
 </script>
 <style scoped>
-		.f { font : normal 30px "궁서", "굴림", "sans-serif"; }	
 </style>

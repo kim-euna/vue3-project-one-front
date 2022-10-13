@@ -15,6 +15,14 @@
         </template>
         </b-table>
 
+        <form class="d-flex">
+            <b-form-select v-model="searchSelected" :options="options"></b-form-select>
+            &nbsp;
+            <b-form-input v-model="searchText"></b-form-input>
+            &nbsp;
+            <button class="btn btn-secondary my-2 my-sm-0" v-on:click="goSearch">Search</button>
+        </form>
+        &nbsp; 
         <b-pagination
         v-model="currentPage"
         :total-rows="rows"
@@ -50,7 +58,14 @@ export default {
             currentPage : 1,
             pagingItems : [],
             originItems : [],
-            index : '',    
+            index : '', 
+            searchText : null,
+            searchSelected : 'author',
+            options : [
+                {value: 'author', text: '작성자'},
+                {value: 'title', text: '제목'},
+                {value: 'content', text: '내용'},
+            ],
         });
 
         const onRowClicked = (one, two, three) => {
@@ -89,7 +104,7 @@ export default {
 
             
         const getData = async (page) => {
-            await timeout(1000);
+            await timeout(300);
             const { data } = await $axios.get(process.env.VUE_APP_API_URI + '/board/list', {})
             state.originItems = data;
             paginging(page);
@@ -100,6 +115,11 @@ export default {
             let startNo = ( page - 1 ) * 5; 
             let endNo = ( page * 5 );
             state.pagingItems = state.originItems.slice(startNo, endNo); //endNo-1까지. endNo미포함
+        }
+
+        const goSearch = () => {
+            console.log(state.searchSelected);
+            console.log(state.searchText);
         }
 
         onMounted(async() => {
@@ -113,6 +133,7 @@ export default {
             pageClick,
             onRowClicked,
             load,
+            goSearch,
         }
     },
     data() {
