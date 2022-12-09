@@ -19,17 +19,13 @@
         <div class="collapse navbar-collapse" id="navbarColor03">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <router-link to="/board/main"
-                ><a class="nav-link" href="#">diary</a></router-link
-              >
+              <router-link to="/diary/main"><a class="nav-link" href="#">diary</a></router-link>
             </li>
             <li class="nav-item">
               <!--
               <router-link to="/about"><a class="nav-link" href="#">About</a></router-link>
                 -->
-              <router-link to="/about"
-                ><a class="nav-link" href="#">about me</a></router-link
-              >
+              <router-link to="/about"><a class="nav-link" href="#">about me</a></router-link>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -42,7 +38,7 @@
                 >more ..</a
               >
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">guest book</a>
+                <router-link to="/guestBook"><a class="dropdown-item" href="#">guest book</a></router-link>
               </div>
             </li>
           </ul>

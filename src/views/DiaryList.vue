@@ -2,7 +2,7 @@
     <b-container><div style="padding:10px;"> </div></b-container> <!--여백-->
     <b-container>
     <div>
-        <b-table 
+        <b-table
             id="itemList"
             :items="pagingItems"
             :per-page="perPage"
@@ -22,7 +22,7 @@
             &nbsp;
             <button class="btn btn-secondary my-2 my-sm-0" v-on:click="goSearch">Search</button>
         </form>
-        &nbsp; 
+        &nbsp;
         <b-pagination
         v-model="currentPage"
         :total-rows="rows"
@@ -32,8 +32,8 @@
         @page-click="pageClick"
         ></b-pagination>
         <p class="mt-3">현재 페이지 : {{ currentPage }}</p>
-        <b-button variant="outline-primary">글쓰기</b-button>
-    </div> 
+        <b-button variant="outline-primary" @click="goWrite">글쓰기</b-button>
+    </div>
     </b-container>
 </template>
 
@@ -50,15 +50,15 @@ export default {
     async setup() {
         const router = useRouter()
 
-        const app = getCurrentInstance();     
-        const $axios = app.appContext.config.globalProperties.$axios;   
-        //const $serverUrl = app.appContext.config.globalProperties.$serverUrl;   
+        const app = getCurrentInstance();
+        const $axios = app.appContext.config.globalProperties.$axios;
+        //const $serverUrl = app.appContext.config.globalProperties.$serverUrl;
         const state = reactive({
             perPage : 5,
             currentPage : 1,
             pagingItems : [],
             originItems : [],
-            index : '', 
+            index : '',
             searchText : null,
             searchSelected : 'author',
             options : [
@@ -69,12 +69,11 @@ export default {
         });
 
         const onRowClicked = (one, two, three) => {
-            console.log(JSON.stringify(two.idx));//key
             router.push({
-                name : "BoardDetail",
-                params : { idx: two.idx } //Params 프로그래밍 방식
+                name : "DiaryDetail",
+                params : { idx: two.id } //Params 프로그래밍 방식
             });
-        }   
+        }
 
         //page-click event를 쓰면, 페이징버튼을 누를 때, 버튼 이벤트와 page번호를 argument로 전달해줌.
         const pageClick = (bvEvt, page) => {
@@ -87,9 +86,9 @@ export default {
             $axios.get($serverUrl + "/board/list", {
                 //params: this.requestBody,
                 //headers: {}
-            }).then((res) => {    
+            }).then((res) => {
                 state.originItems = res.data
-                paginging(page);    
+                paginging(page);
             }).catch((err) => {
                 if (err.message.indexOf('Network Error') > -1) {
                 alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
@@ -102,17 +101,17 @@ export default {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
-            
+
         const getData = async (page) => {
             await timeout(300);
-            const { data } = await $axios.get(process.env.VUE_APP_API_URI + '/board/list', {})
+            const { data } = await $axios.get(process.env.VUE_APP_API_URI + '/api/diary/selectAll', {})
             state.originItems = data;
             paginging(page);
             return data;
         }
 
         const paginging = (page) => {
-            let startNo = ( page - 1 ) * 5; 
+            let startNo = ( page - 1 ) * 5;
             let endNo = ( page * 5 );
             state.pagingItems = state.originItems.slice(startNo, endNo); //endNo-1까지. endNo미포함
         }
@@ -122,11 +121,17 @@ export default {
             console.log(state.searchText);
         }
 
+        const goWrite = () => {
+            router.push({
+                name : "DiaryWrite"
+            });
+        }
+
         onMounted(async() => {
             //await getData(state.currentPage);
         })
 
-        const load = await getData(state.currentPage); //맨 밑에 와야함 
+        const load = await getData(state.currentPage); //맨 밑에 와야함
 
         return {
             ...toRefs(state),
@@ -134,10 +139,11 @@ export default {
             onRowClicked,
             load,
             goSearch,
+            goWrite,
         }
     },
     data() {
-        return {   
+        return {
         }
     },
     computed : {
@@ -145,7 +151,7 @@ export default {
             return this.originItems.length;
         }
     },
-    methods : {     
+    methods : {
     }
 }
 </script>

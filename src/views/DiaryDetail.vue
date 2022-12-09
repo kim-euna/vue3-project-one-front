@@ -3,7 +3,7 @@
     <b-card>
       <div class="row">
       <div class="col-md-2"/>
-      <div class="col-md-8">      
+      <div class="col-md-8">
       <b-form @submit="onSubmit"> <!-- @reset="onReset -->
         <b-form-group id="input-group-1" label="제목" label-for="input-1">
           <b-form-input
@@ -35,7 +35,7 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group id="input-group-3" label="작성일" label-for="input-3">
+        <b-form-group id="input-group-3" label="내용" label-for="input-3">
           <b-form-textarea
             id="textarea"
             v-model="originItems.contents"
@@ -45,7 +45,7 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button @click="goBoardList">목록으로</b-button>
+        <b-button @click="goDiaryList">목록으로</b-button>
       </b-form>
       </div>
       </div>
@@ -60,16 +60,16 @@ import axios from 'axios';
 import { useRouter, useRoute } from 'vue-router'
 
 export default {
-    name : 'BoardDetail',
+    name : 'DiaryDetail',
     components : {
     },
     setup() {
-        const router = useRouter()      
-        const route = useRoute()      
-        const state = reactive({            
+        const router = useRouter()
+        const route = useRoute()
+        const state = reactive({
           originItems : [
             {
-              idx : '',
+              id : '',
               title : '',
               author : '',
               created_at : '',
@@ -81,7 +81,9 @@ export default {
 
         const getData = async () => {
             try {
-                const { data } = await axios.get(process.env.VUE_APP_API_URI + '/board/' + state.originItems.idx, {}); // back : @PathVariable : URL 경로의 일부를 파라미터로 사용할 때 이용. URL에서 값을 가져온다.
+                console.log('state.originItems.id', state.originItems.id);
+                //http://localhost:8081/api/diary/selectOne/2
+                const { data } = await axios.get(process.env.VUE_APP_API_URI + '/api/diary/selectOne/' + state.originItems.id, {}); // back : @PathVariable : URL 경로의 일부를 파라미터로 사용할 때 이용. URL에서 값을 가져온다.
                 state.originItems = data;
                 state.contentsLen = Object.keys(state.originItems.contents).length;
             } catch(err) {
@@ -91,24 +93,25 @@ export default {
             }
         }
 
-        const goBoardList = () => {
+        const goDiaryList = () => {
             router.push({
-                name : "BoardMain"
+                name : "DiaryMain"
             });
         }
 
         onBeforeMount(() => {
-          state.originItems.idx = route.params.idx;
+            console.log('route.params.id', route.params.idx);
+          state.originItems.id = route.params.idx;
           getData();
         })
 
         return {
             ...toRefs(state),
-            goBoardList,
+            goDiaryList,
         }
     },
     data() {
-        return {   
+        return {
         }
     },
 }
